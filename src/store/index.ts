@@ -26,8 +26,8 @@ import { RootState } from '@reduxjs/toolkit/dist/query/core/apiState'
 import { getDefaultCompilerOptions } from 'typescript'
 
 /*
-// ---- Esta constante esta comentada pois foi usada apenas para apresentar
-// ---- a primeira versão sem o uso da tecnologia do React Redux
+// ----- Esta constante esta comentada pois foi usada apenas para apresentar
+// ----- a primeira versão sem o uso da tecnologia do React Redux
 
 export const store = configureStore({
   reducer: {
