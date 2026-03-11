@@ -21,8 +21,6 @@ import api from '../services/api'
 
   const user = useSelector((state: RootState) => state.user)
 */
-import { RootState } from '@reduxjs/toolkit/dist/query/core/apiState'
-
 import { getDefaultCompilerOptions } from 'typescript'
 
 /*
@@ -39,19 +37,25 @@ export const store = configureStore({
 })
 */
 
+// combineReducers
+// função que combina todos os Reducers em um RootReducer
 const rootReducer = combineReducers({
   carrinho: carrinhoReducer,
   [api.reducerPath]: api.reducer
 })
 
-export function configureStore(estadoInicial?: PreloadedState<RootState>) {
+// -- criarStore --
+// A função que renderiza um componente no Redux.
+// Passado o estado inicial
+export function criarStore(estadoInicial?: PreloadedState<RootState>) {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(api.middleware),
-    estadoInicial
+    preloadedState: estadoInicial
   })
 }
 
+export const store = criarStore()
 export type RootState = ReturnType<typeof rootReducer>
-export type AppStore = ReturnType<typeof configureStore>
+export type AppStore = ReturnType<typeof criarStore>
