@@ -9,6 +9,8 @@ import { renderizarComProvider } from '../../../utils/tests'
 // Depois de instalar o MSW Mock Service Word
 // Vamos usar algumas ferrramentas dele
 import { rest } from 'msw'
+
+// Os teste do MSW trabalha com o Node.
 import { setupServer } from 'msw/node'
 
 // Agora vamos configuar o Mock
@@ -62,9 +64,12 @@ const server = setupServer(
   //  tipo de requisição, além de definir a resposta simulada
   rest.get(
     'http://localhost:4000/produtos',
-    // requisicao => Quem fez requisição
-    // resposta => O que é enviado para na requisição
-    // contexto => O conteúdo no qual é usado para fazer a reposta
+    // requisicao => Um pedido que o cliente faz para o servidor.
+    // A requisição é a comunicação que parte do cliente para o servidor
+    // pedindo algo — seja buscar, criar, alterar ou apagar dados
+
+    // resposta => O que é enviado para de volta ao cliente
+    // contexto => O conteúdo no qual é usado para construir a reposta
     (requisicao, resposta, contexto) => {
       return resposta(contexto.json(mocks))
     }
@@ -87,11 +92,15 @@ describe('Testes para do componente Produtos', () => {
     renderizarComProvider(<Produtos />)
     expect(screen.getAllByText('Carregando...')).toBeInTheDocument()
   })
-  // o Jest faz o seu processamento de forma assincrono
-  // Este teste será feito de forma sincrona
+  // o Jest faz o seu processamento de forma sincrono. Ele não espera
+  // a resposta de uma api. Este fara o Jest executar este teste
+  // antes de prosseguir compilando.
   test('Deve renderizar corretamente com a listagem de jogos', async () => {
     const { debug } = renderizarComProvider(<Produtos />)
     debug()
+    // await trava a execução de Jest até ser processado
+    // waitFor é uma função de testing-library para processamentos
+    // assincronos
     await waitFor(() => {
       expect(screen.getAllByText('Rachão')).toBeInTheDocument()
     })
